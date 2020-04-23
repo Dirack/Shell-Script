@@ -60,17 +60,21 @@ case "$1" in
 
 	-e) ## Enviar email
 
-		read -p "Email destino: " PARA
-		[ $? -ne 0 ] && exit
+		# Se o usuário não passar nenhum arquivo com as informações
+		# do email, peça para ele digitar
+		if [ -z "$2" ]
+		then
+			read -p "Email destino: " PARA
+			[ $? -ne 0 ] && exit
 
-		read -p "Email origem: " DE
-		[ $? -ne 0 ] && exit
+			read -p "Email origem: " DE
+			[ $? -ne 0 ] && exit
 
-		echo -n "Senha: "; read -s XPS; echo " "
-		[ $? -ne 0 ] && exit
+			echo -n "Senha: "; read -s XPS; echo " "
+			[ $? -ne 0 ] && exit
 
-		read -p "Assunto: " ASSUNTO
-		[ $? -ne 0 ] && exit
+			read -p "Assunto: " ASSUNTO
+			[ $? -ne 0 ] && exit
 
 cat << EOF > "$TMP"
 
@@ -84,9 +88,18 @@ cat << EOF > "$TMP"
 
 EOF
 
-		vi "$TMP"
+			vi "$TMP"
+			MENSAGEM=$(cat $TMP | sed -n '/^#/! p' | sed 's/$/<br>/' )
+		else
+			FILE="$2"
+			PARA=$(sed -n '1p' "$FILE")
+			DE=$(sed -n '2p' "$FILE")
+			XPS=$(sed -n '3p' "$FILE")
+			ASSUNTO=$(sed -n '4p' "$FILE")
+			sed -n '1,4!p' "$FILE" >> "$TMP"
+			MENSAGEM=$(cat $TMP | sed -n '/^#/! p')
+		fi
 
-		MENSAGEM=$(cat $TMP | sed -n '/^#/! p' | sed 's/$/<br>/' )
 		echo "Enviando email ..."
 
 		## envie o arquivo por email
