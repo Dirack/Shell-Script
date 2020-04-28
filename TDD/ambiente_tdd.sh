@@ -16,14 +16,6 @@
 
 source $(dirname $0)/tdd_lib.sh
 
-clean(){
-	[ -f "./SConstruct" ] && {
-		rm "./SConstruct"
-	}
-}
-
-trap clean exit err
-
 error "$(echo $PATH | grep -q /Shellinclude && echo $?)" "0" "1" "Verificar se Shellinclude faz parte do PATH"
 
 LISTA="backup cabecalho comp getscons img jonas lembrete lipsum madagainstall mensagemAjuda.sh mensagemErro.sh morse suinstall"
@@ -33,30 +25,3 @@ PASTA="$1"
 echo -e "\tVerificar se os programas estão instalados corretamente"
 verificaInstalacao "$LISTA" "$PASTA"
 error "$?" "0" "2" ""
-
-# Verificar a instalação do Madagascar
-
->SConstruct cat<<EOF
-#
-# Setting up
-#
-from rsf.proj import *
-
-#
-# Make filter.rsf
-#
-Flow('filter',None,'spike n1=1000 k1=300 | bandpass fhi=2 phase=y')
-
-#
-# Make filter.vpl
-#
-Result('filter','wiggle clip=0.02 title="Welcome to Madagascar"')
-
-End()
-EOF
-
-scons
-error "$?" "0" "3" ""
-
-sfspike n1=1000 k1=300 | sfbandpass fhi=2 phase=y | sfin 1>/dev/null
-error "$?" "0" "4" ""
