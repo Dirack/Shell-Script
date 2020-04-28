@@ -102,7 +102,7 @@ case "$1" in
 
 		for i in $(seq "$NUM_LINHAS")
 		do
-			LINHA=$(echo "$RANDOM % $TOTAL_LINHAS" | bc )
+			LINHA=$(echo "$RANDOM % $TOTAL_LINHAS + 1" | bc )
 			sed -n "${LINHA}p" "$CONFIG"
 		done
 	;;
