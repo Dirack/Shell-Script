@@ -183,28 +183,15 @@ case "$OPCAO" in
 		verificarSeTemJpegNaPasta "$PWD"
 
 		# Remover arquivos?
-		echo "Pasta atual: $PWD"
-		read -p "Remover arquivos .jpeg da pasta atual? (y/n)" RESPOSTA_REMOVER_ARQUIVOS
-
-		# Usuário desistiu?
-		if [ "$RESPOSTA_REMOVER_ARQUIVOS" = "n" ]
+		echo "Remover arquivos .jpeg de: $PWD"
+		
+		if rm *.jpeg
 		then
-			echo "Remoção abortada! Nenhum arquivo removido"
+			echo "Arquivos .jpeg removidos com sucesso!"
 			exit 0
-			
-		elif [ "$RESPOSTA_REMOVER_ARQUIVOS" = "y" ]
-		then
-			rm *.jpeg
-			[ $? -eq "0" ] && {
-				echo "Arquivos .jpeg removidos com sucesso!"
-				exit 0
-			}
-
-			echo "Não foram encontrados arquivos .jpeg na pasta!"
-			exit 1
 
 		else
-			MENSAGEMERRO="Opção $RESPOSTA_REMOVER_ARQUIVOS desconhecida! Abortada a execução!"
+			MENSAGEMERRO="Não foram encontrados arquivos .vpl na pasta!"
 			exibirMensagemErroProgramaFormatada "$(basename $0)" "5" "$MENSAGEMERRO"
 		fi
 
@@ -224,30 +211,14 @@ case "$OPCAO" in
 
 		# Remover arquivos?
 		echo "Pasta escolhida: $PASTA_FORNECIDA_USUARIO"
-		read -p "Remover arquivos .jpeg da pasta? (y/n)" RESPOSTA_REMOVER_ARQUIVOS
 
-		# Usuário desistiu de remover os arquivos?
-		if [ "$RESPOSTA_REMOVER_ARQUIVOS" = "n" ]
+		# Verifique se há algum .jpeg na pasta para ser removido
+		if rm "$PASTA_FORNECIDA_USUARIO"*.jpeg
 		then
-			echo "Remoção abortada! Nenhum arquivo removido de $PASTA_FORNECIDA_USUARIO"
-			exit 0
-			
-		elif [ "$RESPOSTA_REMOVER_ARQUIVOS" = "y" ]
-		then
-
-			# Verifique se há algum .jpeg na pasta para ser removido
-			rm "$PASTA_FORNECIDA_USUARIO"*.jpeg && {
 				echo "Arquivos .jpeg removidos de $PASTA_FORNECIDA_USUARIO com sucesso!"
-			} || {
-				MENSAGEMERRO="Arquivos .jpeg não foram encontrados em $PASTA_FORNECIDA_USUARIO"
-				
-				exibirMensagemErroProgramaFormatada "$(basename $0)" "7" "$MENSAGEMERRO"
-			}
-			exit 0
-
 		else
-				MENSAGEMERRO="Opção $RESPOSTA_REMOVER_ARQUIVOS desconhecida! Abortada a execução"	
-				exibirMensagemErroProgramaFormatada "$(basename $0)" "8" "$MENSAGEMERRO"
+			MENSAGEMERRO="Arquivos .jpeg não foram encontrados em $PASTA_FORNECIDA_USUARIO"	
+			exibirMensagemErroProgramaFormatada "$(basename $0)" "7" "$MENSAGEMERRO"
 		fi
 
 		
