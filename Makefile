@@ -25,6 +25,11 @@ comp_tdd.sh:
 	docker run -t -v $(PWD):/Shellinclude dirack/ambientemadagascar:1.0 \
 	bash -c 'apt-get update && export PATH=$$PATH:/Shellinclude && export RSFSRC=/root/madagascar-3.0 && export RSFROOT=/root/madagascar && cd /Shellinclude && comp -c fomels'
 
+getscons_tdd.sh:
+	@echo "...Teste do programa getscons"
+	docker run -t -v $(PWD):/Shellinclude dirack/ambientemadagascar:1.0 \
+	bash -c 'apt-get update && export PATH=$$PATH:/Shellinclude && export RSFSRC=/root/madagascar-3.0 && export RSFROOT=/root/madagascar && cd /Shellinclude && source $$RSFSRC/env.sh && ./TDD/getscons_tdd.sh'
+
 test:	msg ambiente versao $(TESTES:=_tdd.sh)
 
 ambiente: 
