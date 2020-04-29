@@ -23,12 +23,18 @@ source mensagemAjuda.sh
 # Biblioteca de funções para formatar a mensagem de erro
 source mensagemErro.sh
 
-## Verificar se o usuário forneceu $1 e $2
+## Verificar se o usuário forneceu $1
 if [ -z "$1" ]
 then
 	MENSAGEMERRO="Usuário não ofereceu parâmetros ao programa!\nDigite $(basename $0) -h para obter ajuda!"
 	exibirMensagemErroProgramaFormatada "$(basename $0)" "1" "$MENSAGEMERRO"
 fi
+
+## Opção exclusiva para testes (Instalação rápida)
+## A instalação ocorre sem as pastas de usuário
+[ -n "$2" -a "$2" == "--quick-test" ] && {
+	QUICK_TEST="$2"
+}
 
 # Versão deste programa
 VERSAO="Shellinclude - 1.3.0"
@@ -74,6 +80,16 @@ case "$1" in
 			then
 				echo "...Arquivo descompactado com sucesso em $HOME/madagascar-3.0"
 				cd "$HOME/madagascar-3.0"
+
+				## Rodar instalação rápida (Só programas essenciais)
+				[ "$QUICK_TEST" == "--quick-test" ] && {
+					rm -r "$HOME/madagascar-3.0/user"
+					mkdir "$HOME/madagascar-3.0/user"
+					rm -r "$HOME/madagascar-3.0/su"
+					mkdir "$HOME/madagascar-3.0/su"
+					rm -r "$HOME/madagascar-3.0/trip"
+					mkdir "$HOME/madagascar-3.0/trip"
+				}
 			else
 
 				MENSAGEMERRO="Ocorreu um erro inesperado ao descompactar o pacote em $HOME/madagascar-3.0"
