@@ -20,6 +20,11 @@ VERSAO="1.3.0"
 install:
 	@echo "Instalação das dependências e configuração do ambiente..."
 
+comp_tdd.sh:
+	@echo "...Teste do programa comp"
+	docker run -t -v $(PWD):/Shellinclude dirack/ambientemadagascar:1.0 \
+	bash -c 'apt-get update && export PATH=$$PATH:/Shellinclude && export RSFSRC=/root/madagascar-3.0 && export RSFROOT=/root/madagascar && cd /Shellinclude && comp -c fomels'
+
 test:	msg ambiente versao $(TESTES:=_tdd.sh)
 
 ambiente: 
