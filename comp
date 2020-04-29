@@ -73,7 +73,7 @@ case "$OPCAO" in
 
 	# Verificar se a variável RSFSRC está setada
 	[ -z "$RSFSRC" ] && {
-		MENSAGEMERRO="A variável RSFSRC não está setada!\nEsta variável é importante para o programa enconstrar a sua instalação do Madagascar!"
+		MENSAGEMERRO="A variável RSFSRC não está setada!\nEsta variável é importante para o programa encontrar a sua instalação do Madagascar!"
         	exibirMensagemErroProgramaFormatada "$(basename $0)" "3" "$MENSAGEMERRO"
 	}
 
