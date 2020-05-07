@@ -194,10 +194,11 @@ esac
 # Arquivo que será criado
 file="$2"
 ARQUIVO_CRIADO="$2"
+NOME_ARQUIVO=$(basename "$2")
 
 ## variável que armazena o cabeçalho padronizado
 DATA=$(date +%d/%m/%Y)
-HEAD="$ARQUIVO_CRIADO (§)\n\nObjetivo:\n\nSite: $SITE\n\nVersão 1.0\n\nProgramador: $PROGRAMADOR $DATA\n\nEmail: $EMAIL\n\nLicença: $LICENCA."
+HEAD="$NOME_ARQUIVO (§)\n\nObjetivo:\n\nSite: $SITE\n\nVersão 1.0\n\nProgramador: $PROGRAMADOR $DATA\n\nEmail: $EMAIL\n\nLicença: $LICENCA."
 
 # Verificar se o usuário forneceu o nome 
 # de um arquivo que já existe.
