@@ -206,7 +206,6 @@ verificarSeArquivoExiste "$file"
 
 if [ "$?" -ne "0" ] 
 then
-	echo "O arquivo existe! Fazendo uma cópia..."
 	mv "$2" "$2.bak" #cópia .bak
 	EXISTE="1"
 fi
@@ -245,7 +244,8 @@ case "$1" in
 	;;
 
 	-py)	## cabeçalho para python
-		echo "# coding: utf-8" >> "$file"
+		echo '#!/usr/bin/env python' >> "$file"
+		echo '# -*- coding: utf-8 -*-' >> "$file"
 		echo "#" >> "$file"
 		echo -e "$HEAD" | sed 's/^/# /' | sed 's/§/Python/' >> "$file"
 	;;
@@ -315,6 +315,7 @@ if [ "$EXISTE" = "1" ]
 then
 	echo -e "\n" >> "$file"
 	cat "$file.bak" >> "$file"
+	rm "$file.bak"
 fi
 
 exit 0
