@@ -1,0 +1,87 @@
+#!/bin/bash
+#
+# mycustomprompt (Shell Script)
+#
+# Objetivo: Customizar o prompt do Shell utilizando templates disponíveis (PS1)
+# 
+# Site: https://dirack.github.io
+#
+# Versão 1.3.0
+#
+# Programador: Rodolfo A. C. Neves 30/10/2020
+# 
+# email: rodolfo_profissional@hotmail.com
+# 
+# Licença: Software de uso livre e código aberto.
+
+# Biblioteca de funções para formatar a mensagem de ajuda
+source mensagemAjuda.sh 
+
+# Biblioteca de funções para formatar a mensagem de erro
+source mensagemErro.sh
+
+#----------------{ Configuração de variáveis }-----------------------------#
+
+# Versão deste programa
+VERSAO="Shellinclude - 1.3.0"
+
+# Opção passada pelo usuário
+OPCAO="$1"
+
+NOME_PROGRAMA="$(basename $0)" 
+DESCRICAO="Customizar a variável PS1 (prompt) do Shell"
+PARAMETROS="-h --help::Exibe esta mensagem de ajuda e sai
+-v --version::Exibe a Versão do programa e sai
+-l --list::Lista os templates disponíveis
+-c :: Escolhe a opção <número>"
+EXEMPLO_DE_USO="~$ $(basename $0) -l # lista as opções disponíveis
+	~$ $(basename $0) -c <número> # Escolhe a opção <número>
+"
+
+NUM_TEMPLATES=4
+PS1_TEMPLATES=('${debian_chroot:+($debian_chroot)}\\[\\033[01;32m\\]\\u@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$ ' "meu prompt -> " "»»» " "digite um comando, abaixo:\n --> ")
+TEMPLATES=('user@user-S14BW01:dir$' 'meu prompt -> ' '»»» ' 'digite um comando, abaixo:\\n --> ')
+
+#--------------------------------------------------------------------------#
+
+
+# Verificar se o usuário forneceu algum parâmetro
+[ -z "$OPCAO" ] && {
+	MENSAGEMERRO="Usuário não ofereceu parâmetros ao programa!\nDigite $(basename $0) -h para obter ajuda!"
+	exibirMensagemErroProgramaFormatada "$(basename $0)" "1" "$MENSAGEMERRO"
+}
+
+case "$OPCAO" in
+-h | --help) ## Exibir ajuda
+	clear
+	exibirMensagemAjudaProgramaFormatada "$NOME_PROGRAMA" "$DESCRICAO" "$PARAMETROS" "$EXEMPLO_DE_USO"
+	exit 0
+;;
+
+-v | --version) ## Exibir versão
+	echo "$VERSAO"
+	exit 0
+;;
+
+-l | --list) ## Lista as opções de templates da PS1
+
+	echo "Opções de prompt disponíveis: "
+	for i in $(seq 0 1 $((NUM_TEMPLATES-1)))
+	do
+		echo -e "$i - ${TEMPLATES[$i]}"
+	done
+
+;;
+
+-c) ## Escolhe um template
+
+	PS1="${PS1_TEMPLATES[$2]}"
+	sed -i '/PS1/s/=.*/=\"'"$PS1"'\"/' ~/.bash_aliases
+	echo "Abra um novo terminal para utilizar as modificações ou rode source ~/.bash_aliases"
+;;
+
+*) ## Usuário forneceu parâmetro desconhecido
+	MENSAGEMERRO="Opção $OPCAO desconhecida!\nDigite $(basename $0) -h para obter ajuda"
+	exibirMensagemErroProgramaFormatada "$(basename $0)" "9" "$MENSAGEMERRO"
+;;
+esac
