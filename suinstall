@@ -73,7 +73,7 @@ case "$1" in
 			echo "...Já existe uma versão do pacote SU em /tmp/download"
 		else
 		
-			if wget -c "$URL" -P "/tmp" &> /dev/null
+			if wget -c "$URL" -O "/tmp/download" &> /dev/null
 			then
 				echo -e "...Pacote SU baixado com sucesso em /tmp/download"
 			else
