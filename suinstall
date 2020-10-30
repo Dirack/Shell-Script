@@ -64,8 +64,10 @@ case "$1" in
 	-i | --install) ## Instalar o SU na pasta atual
 
 		# Baixar a versão atual do SU do servidor da CWP
-		URL="https://nextcloud.seismic-unix.org/index.php/s/WgXpRba4DPPaiNK/download"
+		URL="https://nextcloud.seismic-unix.org/s/LZpzc8jMzbWG9BZ/download?path=%2F&files=cwp_su_all_44R19.tgz"
+
 		echo -e "Baixar o pacote SU de $URL..."
+
 		if [ -f "/tmp/download" ]
 		then
 			echo "...Já existe uma versão do pacote SU em /tmp/download"
